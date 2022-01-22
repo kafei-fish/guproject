@@ -3,11 +3,13 @@ package com.lxl.serviceedu.entity.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author MyLong
  */
 @Data
-public class TeacherQuery {
+public class TeacherQuery implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

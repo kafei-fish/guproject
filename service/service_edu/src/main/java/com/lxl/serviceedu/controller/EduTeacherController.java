@@ -2,12 +2,11 @@ package com.lxl.serviceedu.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lxl.commonutils.R;
+import com.lxl.serviceedu.service.EduTeacherService;
 import com.lxl.serviceedu.entity.EduTeacher;
 import com.lxl.serviceedu.entity.vo.TeacherQuery;
-import com.lxl.serviceedu.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,8 +26,8 @@ import java.util.List;
  */
 @Api(description = "讲师管理")
 @RestController
-
 @RequestMapping("/serviceedu/edu-teacher")
+
 public class EduTeacherController {
     @Autowired
     private EduTeacherService teacherService;
@@ -41,6 +40,7 @@ public class EduTeacherController {
     @GetMapping("getEduTeacher")
     public R list(){
         List<EduTeacher> list = teacherService.list(null);
+
         return R.ok().data("items",list);
     }
 
@@ -91,13 +91,14 @@ public class EduTeacherController {
      * @return
      */
     @ApiOperation(value = "分页查询接口")
-    @GetMapping("pageTeacherCondition/{page}/{limit}}")
+    @PostMapping("pageTeacherCondition/{page}/{limit}")
     public R pageQueryList(
             @ApiParam(name = "page",value = "当前页面",required = true)
             @PathVariable Long page,
             @ApiParam(name = "limit",value = "当前页面条数",required = true)
             @PathVariable Long limit,
             @ApiParam(name = "teacherQuery",value = "查询对象",required = false)
+            @RequestBody
             TeacherQuery teacherQuery){
         Page<EduTeacher> pageQuery =new Page<>(page,limit);
         QueryWrapper<EduTeacher> wrapper=new QueryWrapper<>();
@@ -118,6 +119,7 @@ public class EduTeacherController {
         if(!StringUtils.isEmpty(end)){
             wrapper.le("gmt_create",end);
         }
+        wrapper.orderByDesc("gmt_create");
         teacherService.page(pageQuery,wrapper);
         long total = pageQuery.getTotal();
         List<EduTeacher> records = pageQuery.getRecords();
@@ -159,5 +161,7 @@ public class EduTeacherController {
     public R updateTeacher(@RequestBody EduTeacher eduTeacher){
         return  teacherService.updateById(eduTeacher) ? R.ok() : R.error();
     }
+
+
 }
 

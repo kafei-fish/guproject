@@ -1,10 +1,13 @@
 server:
-  port: 8081
+  port: 8001
   #服务名
 spring:
   application:
-    name: service_edu
-
+    name: service-edu
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
   profiles:
     active: dev
     #数据库连接
@@ -18,5 +21,4 @@ spring:
     time-zone: GMT+8
   #mp日志
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:com/lxl/serviceedu/mapper/xml/*.xml
